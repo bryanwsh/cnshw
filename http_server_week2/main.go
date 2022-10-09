@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-
 	"github.com/golang/glog"
 )
 
@@ -31,13 +30,10 @@ func answer2(res http.ResponseWriter, req *http.Request) {
 
 func answer3(res http.ResponseWriter, req *http.Request) {
 	req_ip := req.RemoteAddr
-	io.WriteString(res, "answer3")
-	statusCode := 200
+	statusCode := 203
 	res.WriteHeader(statusCode)
-	resHeader := res.Header()
-	resCode := res.Header().Get("Response Code")
-	glog.V(2).Info(resHeader)
-	glog.V(2).Info("Client IP:", req_ip, ", Response Code:", resCode,".")
+	glog.V(2).Info("Client IP:", req_ip, ", Response Code:", statusCode,".")
+	io.WriteString(res, "answer3")
 }
 
 func main() {

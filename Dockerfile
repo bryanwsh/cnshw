@@ -11,5 +11,4 @@ RUN mkdir /app
 COPY --from=builder /dist/http_server /app/http_server
 RUN chmod +x /app/http_server
 WORKDIR /app
-EXPOSE 80
 CMD [ "/app/http_server" ]

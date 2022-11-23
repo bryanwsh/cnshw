@@ -25,7 +25,7 @@ func answer1(res http.ResponseWriter, req *http.Request) {
 }
 
 func answer2(res http.ResponseWriter, req *http.Request) {
-	version := configs.version
+	version := configs.Version
 	io.WriteString(res, version)
 }
 
@@ -39,7 +39,7 @@ func answer3(res http.ResponseWriter, req *http.Request) {
 
 type Configs struct {
 	Port    string `json:"port"`
-	version string `json:"version"`
+	Version string `json:"version"`
 }
 
 var configs Configs
@@ -63,8 +63,8 @@ func main() {
 	http.HandleFunc("/healthz", answer4)
 	// listen 80
 	listenAddress := ":" + port
-	err := http.ListenAndServe(listenAddress, nil)
-	if err != nil {
+	listenAndServeErr := http.ListenAndServe(listenAddress, nil)
+	if listenAndServeErr != nil {
 		log.Fatal(err)
 	}
 }

@@ -4,11 +4,7 @@ ENV GO111MODULE=on \
 WORKDIR /build
 COPY . /build/
 RUN go build -o http_server http_server_week2/main.go
-WORKDIR /dist
-RUN cp /build/http_server /dist/http_server
-FROM ubuntu:latest
 RUN mkdir /app
-COPY --from=builder /dist/http_server /app/http_server
-RUN chmod +x /app/http_server
+RUN cp /build/http_server /app/http_server
 WORKDIR /app
 CMD [ "/app/http_server" ]

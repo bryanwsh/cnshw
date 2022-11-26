@@ -8,6 +8,9 @@ spec:
       image: bryanwsh330/httpserver:v2.0
       args:
         - /app/http_server
+      volumeMounts:
+        - name: configs
+          mountPath: /app/configs/config.json
       readinessProbe:
         httpGet:
           path: /healthz
@@ -27,3 +30,7 @@ spec:
               - /bin/sh
               - pkill
               - httpserver
+  volumes:
+    - name: configs
+      configMap:
+        name: week8-config

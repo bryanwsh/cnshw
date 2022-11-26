@@ -5,8 +5,6 @@ import (
 	"flag"
 	"github.com/golang/glog"
 	"io"
-	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 )
@@ -17,7 +15,7 @@ func answer4(res http.ResponseWriter, req *http.Request) {
 }
 
 func answer1(res http.ResponseWriter, req *http.Request) {
-	glog.V(2).Info("answer1 run")
+	glog.Info("answer1 run")
 	for k, v := range req.Header {
 		res.Header().Set(k, v[0])
 	}
@@ -33,7 +31,7 @@ func answer3(res http.ResponseWriter, req *http.Request) {
 	req_ip := req.RemoteAddr
 	statusCode := 203
 	res.WriteHeader(statusCode)
-	glog.V(2).Info("Client IP:", req_ip, ", Response Code:", statusCode, ".")
+	glog.Info("Client IP:", req_ip, ", Response Code:", statusCode, ".")
 	io.WriteString(res, "answer3")
 }
 
@@ -47,10 +45,10 @@ var configs Configs
 func main() {
 	jsonFile, err := os.Open("/app/configs/config.json")
 	if err != nil {
-		log.Fatal(err)
+		glog.Fatal(err)
 	}
 	defer jsonFile.Close()
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	byteValue, _ := io.ReadAll(jsonFile)
 	json.Unmarshal([]byte(byteValue), &configs)
 	port := configs.Port
 	// flag.Parse()
@@ -62,9 +60,10 @@ func main() {
 	http.HandleFunc("/answer3", answer3)
 	http.HandleFunc("/healthz", answer4)
 	// listen 80
-	listenAddress := ":" + port
+	listenAddress := "0.0.0.0:" + port
+	glog.Info(listenAddress)
 	listenAndServeErr := http.ListenAndServe(listenAddress, nil)
 	if listenAndServeErr != nil {
-		log.Fatal(err)
+		glog.Fatal(listenAndServeErr)
 	}
 }

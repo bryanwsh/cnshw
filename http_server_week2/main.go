@@ -10,6 +10,7 @@ import (
 )
 
 func answer4(res http.ResponseWriter, req *http.Request) {
+	glog.Info("/healthz has been called")
 	res.WriteHeader(200)
 	io.WriteString(res, "ok")
 }
